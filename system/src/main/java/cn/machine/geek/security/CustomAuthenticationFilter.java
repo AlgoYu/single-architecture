@@ -36,6 +36,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         super(authenticationManager);
         this.tokenManager = tokenManager;
         this.objectMapper = objectMapper;
+        setFilterProcessesUrl("/login");
     }
 
     /**
@@ -93,7 +94,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         map.put("refreshToken",tokenManager.createRefreshToken(CustomUserDetail.getId()));
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
-        String json = new ObjectMapper().writeValueAsString(R.ok(map));
+        String json = objectMapper.writeValueAsString(R.ok(map));
         writer.print(json);
         writer.flush();
         writer.close();
@@ -112,7 +113,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
-        String json = new ObjectMapper().writeValueAsString(R.fail(failed.getMessage()));
+        String json = objectMapper.writeValueAsString(R.fail(failed.getMessage()));
         writer.print(json);
         writer.flush();
         writer.close();

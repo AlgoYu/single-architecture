@@ -51,13 +51,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // 创建自定义登录逻辑
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(),tokenManager,objectMapper);
-        customAuthenticationFilter.setFilterProcessesUrl("/login");
         // 创建自定义的注销逻辑
         CustomLogout customLogout = new CustomLogout(tokenManager,objectMapper);
+        // 创建自定义Token拦截
+        TokenAuthenticationFilter tokenAuthenticationFilter = new TokenAuthenticationFilter(tokenManager,objectMapper);
+
         // 设置安全策略
         http
                 // 替换自定义登录逻辑
                 .addFilterAfter(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(tokenAuthenticationFilter,UsernamePasswordAuthenticationFilter.class)
                 // 设置注销路径
                 .logout()
                 .logoutUrl("/logout")
