@@ -40,7 +40,7 @@ public class CustomLogout implements LogoutSuccessHandler {
     */
     @Override
     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        String accessToken = httpServletRequest.getHeader(TokenManager.ACCESS_TOKEN_KEY);
+        String accessToken = httpServletRequest.getHeader(TokenManager.TOKEN_HEAD);
         String refreshToken = httpServletRequest.getParameter("refreshToken");
         httpServletResponse.setContentType("application/json;charset=utf-8");
         PrintWriter writer = httpServletResponse.getWriter();
