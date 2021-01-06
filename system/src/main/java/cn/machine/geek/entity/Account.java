@@ -16,7 +16,7 @@ public class Account{
     private String name;
     private String password;
     private String ip;
-    private Boolean disable;
+    private Boolean enable;
     private Long version;
     private LocalDateTime lastLogin;
     private LocalDateTime createTime;

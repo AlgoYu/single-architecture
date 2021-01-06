@@ -6,7 +6,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.machine.geek.entity.Role">
         <id column="id" property="id" />
-        <result column="username" property="name" />
+        <result column="name" property="name" />
         <result column="key" property="key" />
         <result column="version" property="version" />
         <result column="create_time" property="createTime" />
