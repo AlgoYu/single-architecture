@@ -54,17 +54,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 创建自定义的注销逻辑
         CustomLogout customLogout = new CustomLogout(tokenManager,objectMapper);
         // 创建自定义Token拦截
-        TokenAuthenticationFilter tokenAuthenticationFilter = new TokenAuthenticationFilter(tokenManager);
+        CustomTokenAuthenticationFilter customTokenAuthenticationFilter = new CustomTokenAuthenticationFilter(tokenManager);
+        // 创建自定义未登录或身份过期处理
+        CustomAuthenticationEntryPoint customAuthenticationEntryPoint = new CustomAuthenticationEntryPoint(objectMapper);
+        // 创建自定义拒绝访问处理
+        CustomAccessDeniedHandler customAccessDeniedHandler = new CustomAccessDeniedHandler(objectMapper);
 
         // 设置安全策略
         http
                 // 替换自定义登录逻辑
                 .addFilterAt(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 // 增加Token过滤器
-                .addFilterBefore(tokenAuthenticationFilter,UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(customTokenAuthenticationFilter,UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                // 增加自定义未登录处理
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .accessDeniedHandler(customAccessDeniedHandler)
                 // 设置注销路径
+                .and()
                 .logout()
                 .logoutUrl("/logout")
+                // 设置注销处理
                 .logoutSuccessHandler(customLogout)
                 .permitAll()
                 // 关闭CSRF攻击，开启跨域。

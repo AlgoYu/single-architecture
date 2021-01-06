@@ -18,10 +18,10 @@ import java.io.IOException;
  * @Description: Token拦截器
  * @Date: 2021/1/6
  */
-public class TokenAuthenticationFilter extends OncePerRequestFilter {
+public class CustomTokenAuthenticationFilter extends OncePerRequestFilter {
     private TokenManager tokenManager;
 
-    public TokenAuthenticationFilter(TokenManager tokenManager) {
+    public CustomTokenAuthenticationFilter(TokenManager tokenManager) {
         this.tokenManager = tokenManager;
     }
 
