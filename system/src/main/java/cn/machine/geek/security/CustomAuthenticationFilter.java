@@ -30,10 +30,12 @@ import java.util.Map;
  */
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private TokenManager tokenManager;
+    private ObjectMapper objectMapper;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, TokenManager tokenManager) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, TokenManager tokenManager, ObjectMapper objectMapper) {
         super(authenticationManager);
         this.tokenManager = tokenManager;
+        this.objectMapper = objectMapper;
     }
 
     /**

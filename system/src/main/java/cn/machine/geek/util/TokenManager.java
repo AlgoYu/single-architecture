@@ -24,11 +24,34 @@ public class TokenManager {
     @Value(value = "${token.refreshTokenExpire}")
     private long refreshTokenExpire;
 
-    private static final String ACCESS_TOKEN_KEY = "AccessToken";
-    private static final String REFRESH_TOKEN_KEY = "RefreshToken";
+    public static final String TOKEN_HEAD = "Token";
+    public static final String ACCESS_TOKEN_KEY = "AccessToken";
+    public static final String REFRESH_TOKEN_KEY = "RefreshToken";
     // Redis
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 判断是否有访问Token
+    * @Date: 2021/1/6
+     * @param token
+    * @Return: boolean
+    */
+    public boolean hasAccessToken(String token){
+        return redisTemplate.hasKey(ACCESS_TOKEN_KEY + token);
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 判断是否有刷新Token
+    * @Date: 2021/1/6
+     * @param token
+    * @Return: boolean
+    */
+    public boolean hasRefreshToken(String token){
+        return redisTemplate.hasKey(REFRESH_TOKEN_KEY + token);
+    }
 
     /**
     * @Author: MachineGeek

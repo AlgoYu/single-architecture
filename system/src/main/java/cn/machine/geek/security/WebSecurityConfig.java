@@ -1,6 +1,7 @@
 package cn.machine.geek.security;
 
 import cn.machine.geek.util.TokenManager;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -24,6 +26,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private TokenManager tokenManager;
+    @Autowired
+    private ObjectMapper objectMapper;
     /**
     * @Author: MachineGeek
     * @Description: 注册密码加密器
@@ -46,21 +50,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 创建自定义登录逻辑
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(),tokenManager);
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(),tokenManager,objectMapper);
         customAuthenticationFilter.setFilterProcessesUrl("/login");
+        // 创建自定义的注销逻辑
+        CustomLogout customLogout = new CustomLogout(tokenManager,objectMapper);
         // 设置安全策略
         http
-                // 关闭CSRF攻击，开启跨域。
-                .csrf().disable().cors().and()
+                // 替换自定义登录逻辑
+                .addFilterAfter(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 // 设置注销路径
                 .logout()
                 .logoutUrl("/logout")
-                .and()
+                .logoutSuccessHandler(customLogout)
+                // 关闭CSRF攻击，开启跨域。
+                .and().csrf().disable().cors()
                 // 设置验证路径
-                .authorizeRequests()
+                .and().authorizeRequests()
                 .anyRequest().authenticated()
+                // 禁止使用Session
                 .and()
-                // 替换自定义登录逻辑
-                .addFilterAfter(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 }
