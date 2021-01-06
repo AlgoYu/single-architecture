@@ -10,7 +10,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -51,6 +50,7 @@ public class CustomUserDetailService implements UserDetailsService {
         authorities.forEach((authority) -> {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority.getKey()));
         });
-        return new User(account.getName(),account.getPassword(),!account.getDisable(),true,true,true,grantedAuthorities);
+        account.setAuthorities(grantedAuthorities);
+        return account;
     }
 }
