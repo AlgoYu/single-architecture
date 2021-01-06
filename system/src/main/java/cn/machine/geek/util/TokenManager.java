@@ -1,0 +1,91 @@
+package cn.machine.geek.util;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @Author: MachineGeek
+ * @Description: Token工具类
+ * @Email: 794763733@qq.com
+ * @Date: 2021/1/6
+ */
+@Component
+public class TokenManager {
+    // AccessToken 过期时间
+    @Value(value = "${token.accessTokenExpire}")
+    private long accessTokenExpire;
+    // RefreshToken 过期时间
+    @Value(value = "${token.refreshTokenExpire}")
+    private long refreshTokenExpire;
+
+    private static final String ACCESS_TOKEN_KEY = "AccessToken";
+    private static final String REFRESH_TOKEN_KEY = "RefreshToken";
+    // Redis
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 创建访问Token
+    * @Date: 2021/1/6
+     * @param userDetails
+    * @Return: java.lang.String
+    */
+    public String createAccessToken(UserDetails userDetails){
+        String token = UUID.randomUUID().toString();
+        redisTemplate.opsForValue().set(ACCESS_TOKEN_KEY + token,userDetails,accessTokenExpire, TimeUnit.SECONDS);
+        return token;
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 创建刷新Token
+    * @Date: 2021/1/6
+     * @param
+    * @Return: java.lang.String
+    */
+    public String createRefreshToken(Long id){
+        String token = UUID.randomUUID().toString();
+        redisTemplate.opsForValue().set(REFRESH_TOKEN_KEY + token, id, refreshTokenExpire, TimeUnit.SECONDS);
+        return token;
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 删除访问Token
+    * @Date: 2021/1/6
+     * @param token
+    * @Return: void
+    */
+    public void deleteAccessToken(String token){
+        redisTemplate.delete(ACCESS_TOKEN_KEY + token);
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 删除访问Token
+    * @Date: 2021/1/6
+     * @param token
+    * @Return: void
+    */
+    public void deleteRefreshToken(String token){
+        redisTemplate.delete(REFRESH_TOKEN_KEY + token);
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 获取信息通过访问
+    * @Date: 2021/1/6
+     * @param token
+    * @Return: org.springframework.security.core.userdetails.UserDetails
+    */
+    public UserDetails getByAccessToken(String token){
+        return (UserDetails) redisTemplate.opsForValue().get(ACCESS_TOKEN_KEY + token);
+    }
+}

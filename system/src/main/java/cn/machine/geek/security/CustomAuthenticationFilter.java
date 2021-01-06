@@ -1,9 +1,11 @@
 package cn.machine.geek.security;
 
 import cn.machine.geek.common.R;
+import cn.machine.geek.util.TokenManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -27,6 +29,13 @@ import java.util.Map;
  * @Date: 2021/1/6
  */
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+    private TokenManager tokenManager;
+
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, TokenManager tokenManager) {
+        super(authenticationManager);
+        this.tokenManager = tokenManager;
+    }
+
     /**
     * @Author: MachineGeek
     * @Description: 从请求中获取数据并创建认证对象
@@ -78,6 +87,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         CustomUserDetail.setPassword(null);
         Map<String,Object> map = new HashMap<>();
         map.put("user",CustomUserDetail);
+        map.put("accessToken",tokenManager.createAccessToken(CustomUserDetail));
+        map.put("refreshToken",tokenManager.createRefreshToken(CustomUserDetail.getId()));
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
         String json = new ObjectMapper().writeValueAsString(R.ok(map));

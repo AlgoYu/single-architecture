@@ -1,5 +1,7 @@
 package cn.machine.geek.security;
 
+import cn.machine.geek.util.TokenManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,6 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private TokenManager tokenManager;
     /**
     * @Author: MachineGeek
     * @Description: 注册密码加密器
@@ -42,19 +46,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 创建自定义登录逻辑
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(),tokenManager);
         customAuthenticationFilter.setFilterProcessesUrl("/login");
-        try {
-            customAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // 设置安全策略
         http
                 // 关闭CSRF攻击，开启跨域。
                 .csrf().disable().cors().and()
                 // 设置注销路径
                 .logout()
-                .logoutUrl("/loginout")
+                .logoutUrl("/logout")
                 .and()
                 // 设置验证路径
                 .authorizeRequests()

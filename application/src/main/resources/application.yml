@@ -39,6 +39,12 @@ spring:
 # Mybatis Plus
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
+# Token超时时间（单位秒）
+token:
+  # 8个小时28800
+  accessTokenExpire: 28800
+  # 15天1296000
+  refreshTokenExpire: 1296000
 # 映射路径
 route-map:
   uri: /upload/
