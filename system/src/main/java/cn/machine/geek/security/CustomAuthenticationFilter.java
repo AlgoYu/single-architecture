@@ -1,7 +1,6 @@
 package cn.machine.geek.security;
 
-import cn.machine.geek.entity.Account;
-import cn.machine.geek.entity.R;
+import cn.machine.geek.common.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.MediaType;
@@ -75,10 +74,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        Account account = (Account) authResult.getPrincipal();
-        account.setPassword(null);
+        CustomUserDetail CustomUserDetail = (CustomUserDetail) authResult.getPrincipal();
+        CustomUserDetail.setPassword(null);
         Map<String,Object> map = new HashMap<>();
-        map.put("account",account);
+        map.put("user",CustomUserDetail);
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
         String json = new ObjectMapper().writeValueAsString(R.ok(map));

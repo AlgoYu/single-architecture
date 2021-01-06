@@ -1,4 +1,4 @@
-package cn.machine.geek.entity;
+package cn.machine.geek.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class R {
      * @Description: 成功
      * @Date: 2021/1/6
      * @param
-     * @Return cn.machine.geek.entity.R
+     * @Return cn.machine.geek.common.R
      */
     public static R ok(){
         return new R(true,200,null,null);
@@ -35,7 +35,7 @@ public class R {
      * @Description: 成功携带数据
      * @Date: 2021/1/6
      * @param
-     * @Return cn.machine.geek.entity.R
+     * @Return cn.machine.geek.common.R
      */
     public static R ok(Object data){
         return new R(true,200,null,data);
@@ -45,7 +45,7 @@ public class R {
      * @Description: 失败
      * @Date: 2021/1/6
      * @param
-     * @Return cn.machine.geek.entity.R
+     * @Return cn.machine.geek.common.R
      */
     public static R fail(String msg){
         return new R(false,200,msg,null);

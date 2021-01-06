@@ -50,7 +50,6 @@ public class CustomUserDetailService implements UserDetailsService {
         authorities.forEach((authority) -> {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority.getKey()));
         });
-        account.setAuthorities(grantedAuthorities);
-        return account;
+        return new CustomUserDetail(account.getId(),account.getName(),account.getPassword(),!account.getDisable(),grantedAuthorities);
     }
 }
