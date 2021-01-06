@@ -14,6 +14,16 @@
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        `id`,`name`,`key`,`version`,`last_login`,`create_time`,`update_time`
+        `id`,`name`,`key`,`version`,`create_time`,`update_time`
     </sql>
+    <!-- 根据账户ID查询角色 -->
+    <select id="selectByAccountId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
+        `role`
+        INNER JOIN account_role_relation ON account_role_relation.role_id = role.id
+        WHERE
+        account_role_relation.account_id = #{accountId}
+    </select>
 </mapper>

@@ -8,10 +8,30 @@
         <id column="id" property="id" />
         <result column="username" property="name" />
         <result column="key" property="key" />
-        <result column="parent_id" property="parentId" />
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        `id`,`name`,`key`,`parent_id`
+        `id`,`name`,`key`
     </sql>
+    <!-- 根据用户ID查询权力 -->
+    <select id="selectByAccountId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
+        authority
+        INNER JOIN role_authority_relation ON role_authority_relation.authority_id = authority.id
+        INNER JOIN account_role_relation ON account_role_relation.role_id = role_authority_relation.role_id
+        WHERE
+        account_role_relation.account_id = #{accountId}
+    </select>
+    <!-- 根据角色ID查询权力 -->
+    <select id="selectByRoleId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM
+        authority
+        INNER JOIN role_authority_relation ON role_authority_relation.authority_id = authority.id
+        WHERE
+        role_authority_relation.role_id = #{roleId}
+    </select>
 </mapper>

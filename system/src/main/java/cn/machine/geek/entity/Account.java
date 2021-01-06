@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
  * @Date: 2021/1/6
  */
 @Data
-public class Account {
+public class Account{
     private Long id;
     private String name;
     private String password;
     private String ip;
-    private boolean disable;
+    private Boolean disable;
     private Long version;
     private LocalDateTime lastLogin;
     private LocalDateTime createTime;

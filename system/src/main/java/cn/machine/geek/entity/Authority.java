@@ -13,5 +13,4 @@ public class Authority {
     private Long id;
     private String name;
     private String key;
-    private Long parentId;
 }
