@@ -1,17 +1,15 @@
-package cn.machine.geek.service.impl;
+package cn.machine.geek.util;
 
-import cn.machine.geek.config.FreeMarkerHump;
 import cn.machine.geek.entity.DatabaseTableColumn;
 import cn.machine.geek.mapper.DatabaseMapper;
-import cn.machine.geek.service.CodeGeneratorService;
-import cn.machine.geek.util.ZipUtil;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.google.common.base.CaseFormat;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,18 +22,21 @@ import java.util.UUID;
 
 /**
  * @Author: MachineGeek
- * @Description: 代码生成器实现类
+ * @Description: 代码生成器
  * @Date: 2020/11/05
  */
-@Service
-public class CodeGeneratorServiceImpl implements CodeGeneratorService {
+@Component
+public class CodeGenerator{
+    // FreeMarker
     private Configuration configuration;
+    // 数据库映射类
     private DatabaseMapper databaseMapper;
+    // 生成路径
     @Value("${generate-path}")
     private String generatePath;
 
     @Autowired
-    public CodeGeneratorServiceImpl(Configuration configuration, DatabaseMapper databaseMapper) {
+    public CodeGenerator(Configuration configuration, DatabaseMapper databaseMapper) {
         this.configuration = configuration;
         this.databaseMapper = databaseMapper;
         // 加入驼峰函数
@@ -66,11 +67,13 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
             data.put("instanceName", instanceName);
             data.put("moduleName",moduleName);
             data.put("date", LocalDate.now());
+            data.put("id", IdWorker.getIdStr());
             // 创建目录
             String randomName = UUID.randomUUID().toString();
             String directory = generatePath + randomName + "/";
             File file = new File(directory);
             if(file.mkdirs()){
+                generateFile("sql.ftl",data,directory + className +".sql");
                 generateFile("entity.ftl",data,directory + className +".java");
                 generateFile("xml.ftl",data,directory + className +"Mapper.xml");
                 generateFile("mapper.ftl",data,directory + className +"Mapper.java");

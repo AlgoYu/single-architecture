@@ -2,8 +2,6 @@ package cn.machine.geek.test;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @Author: MachineGeek
@@ -11,12 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @Email: 794763733@qq.com
  * @Date: 2021/1/7
  */
-@SpringBootTest
 @Slf4j
-public class DatabaseTest {
-
-    @Test
-    public void name(){
+public class Test {
+    public static void main(String[] args) {
         log.info(IdWorker.getIdStr());
     }
 }

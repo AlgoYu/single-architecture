@@ -2,8 +2,8 @@ package cn.machine.geek.controller;
 
 import cn.machine.geek.common.P;
 import cn.machine.geek.common.R;
-import cn.machine.geek.service.CodeGeneratorService;
 import cn.machine.geek.service.DatabaseService;
+import cn.machine.geek.util.CodeGenerator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -31,7 +31,7 @@ public class CodeGeneratorController {
     @Autowired
     private DatabaseService databaseService;
     @Autowired
-    private CodeGeneratorService codeGeneratorService;
+    private CodeGenerator codeGenerator;
 
     @ApiOperation(value = "获取数据库表",notes = "获取数据库表")
     @GetMapping(value = "/pagingTableByDatabaseName")
@@ -42,7 +42,7 @@ public class CodeGeneratorController {
     @ApiOperation(value = "生成代码",notes = "生成代码")
     @GetMapping(value = "/generate")
     public void generate(@RequestParam(value = "tableName") String tableName, @RequestParam(value = "moduleName") String moduleName,@RequestParam(value = "packageName") String packageName, HttpServletResponse response){
-        String filePath = codeGeneratorService.generate(tableName, packageName, moduleName);
+        String filePath = codeGenerator.generate(tableName, packageName, moduleName);
         response.setContentType("application/octet-stream");
         File file = new File(filePath);
         response.setHeader("Content-Disposition", "attachment; filename="+file.getName());

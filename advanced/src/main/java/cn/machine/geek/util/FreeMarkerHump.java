@@ -1,4 +1,4 @@
-package cn.machine.geek.config;
+package cn.machine.geek.util;
 
 import com.google.common.base.CaseFormat;
 import freemarker.template.TemplateMethodModelEx;

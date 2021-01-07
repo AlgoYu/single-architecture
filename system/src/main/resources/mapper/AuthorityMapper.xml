@@ -8,6 +8,7 @@
         <id column="id" property="id" />
         <result column="name" property="name" />
         <result column="key" property="key" />
+        <result column="parent_id" property="parentId" />
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">

@@ -106,7 +106,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable().cors()
                 // 设置验证路径
                 .and().authorizeRequests()
-                .antMatchers("/login")
+                .antMatchers("/login","/api/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 // 禁止使用Session
