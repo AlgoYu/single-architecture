@@ -5,10 +5,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: MachineGeek
@@ -31,5 +32,15 @@ public class TestController {
             e.printStackTrace();
         }
         return R.ok();
+    }
+
+    @GetMapping(value = "/get")
+    public R get(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("name","haha");
+        map.put("power",123456l);
+        map.put("age",5);
+        map.put("date", LocalDateTime.now());
+        return R.ok(map);
     }
 }
