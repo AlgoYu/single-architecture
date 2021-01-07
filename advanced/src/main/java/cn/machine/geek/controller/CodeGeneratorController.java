@@ -34,9 +34,9 @@ public class CodeGeneratorController {
     private CodeGenerator codeGenerator;
 
     @ApiOperation(value = "获取数据库表",notes = "获取数据库表")
-    @GetMapping(value = "/pagingTableByDatabaseName")
-    public R pagingTableByDatabaseName(@Validated P p){
-        return R.ok(databaseService.pagingTableByDatabaseName(p.getPage(),p.getSize(),p.getKeyword()));
+    @GetMapping(value = "/paging")
+    public R paging(@Validated P p){
+        return R.ok(databaseService.paging(p.getPage(),p.getSize(),p.getKeyword()));
     }
 
     @ApiOperation(value = "生成代码",notes = "生成代码")

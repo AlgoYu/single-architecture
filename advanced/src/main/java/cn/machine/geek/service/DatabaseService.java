@@ -12,5 +12,5 @@ import java.util.List;
  */
 public interface DatabaseService {
     List<String> listDatabase();
-    IPage<DatabaseTable> pagingTableByDatabaseName(int page, int size, String keyWord);
+    IPage<DatabaseTable> paging(int page, int size, String keyWord);
 }
