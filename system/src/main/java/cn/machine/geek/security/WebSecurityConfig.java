@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,6 +29,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private TokenManager tokenManager;
     @Autowired
     private ObjectMapper objectMapper;
+    // 静态资源忽略路径
+    private final String[] uris = new String[]{"/upload/**",
+            "/static/**",
+            "/doc.html",
+            "/favicon.ico",
+            "/webjars/**",
+            "/swagger-resources",
+            "/v2/api-docs",
+            "/druid/**",
+            "/websocket/**"
+    };
+
     /**
     * @Author: MachineGeek
     * @Description: 注册密码加密器
@@ -38,6 +51,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 静态资源URI不拦截
+    * @Date: 2021/1/7
+     * @param web
+    * @Return: void
+    */
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(uris);
     }
 
     /**
