@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.machine.geek</groupId>
-            <artifactId>enhance</artifactId>
+            <artifactId>advanced</artifactId>
             <version>${parent.version}</version>
         </dependency>
     </dependencies>

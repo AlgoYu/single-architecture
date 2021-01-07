@@ -45,7 +45,9 @@ token:
   accessTokenExpire: 28800
   # 15天1296000
   refreshTokenExpire: 1296000
-# 映射路径
+# URI映射路径
 route-map:
   uri: /upload/
   path: /Volumes/Project/upload/
+# 代码生成器生成路径
+generate-path: /Users/machine/Desktop/生成/
