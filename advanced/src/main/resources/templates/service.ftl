@@ -1,6 +1,6 @@
-package cn.machine.geek.service;
+package ${packageName}.service;
 
-import cn.machine.geek.entity.${className};
+import ${packageName}.entity.${className};
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

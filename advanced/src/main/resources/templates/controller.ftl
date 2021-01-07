@@ -1,9 +1,9 @@
-package cn.machine.geek.controller;
+package ${packageName}.controller;
 
-import cn.machine.geek.dto.PageRequest;
-import cn.machine.geek.dto.R;
-import cn.machine.geek.entity.${className};
-import cn.machine.geek.service.${className}Service;
+import cn.machine.geek.common.P;
+import cn.machine.geek.common.R;
+import ${packageName}.entity.${className};
+import ${packageName}.service.${className}Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;

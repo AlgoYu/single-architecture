@@ -1,8 +1,8 @@
-package cn.machine.geek.service.impl;
+package ${packageName}.service.impl;
 
-import cn.machine.geek.entity.${className};
-import cn.machine.geek.mapper.${className}Mapper;
-import cn.machine.geek.service.${className}Service;
+import ${packageName}.entity.${className};
+import ${packageName}.mapper.${className}Mapper;
+import ${packageName}.service.${className}Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

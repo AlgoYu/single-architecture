@@ -1,6 +1,6 @@
-package cn.machine.geek.mapper;
+package ${packageName}.mapper;
 
-import cn.machine.geek.entity.${className};
+import ${packageName}.entity.${className};
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
