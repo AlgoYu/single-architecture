@@ -4,7 +4,6 @@ import cn.machine.geek.common.P;
 import cn.machine.geek.common.R;
 import cn.machine.geek.service.CodeGeneratorService;
 import cn.machine.geek.service.DatabaseService;
-import cn.machine.geek.util.ZipUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -42,15 +41,13 @@ public class CodeGeneratorController {
 
     @ApiOperation(value = "生成代码",notes = "生成代码")
     @GetMapping(value = "/generate")
-    public void generate(@RequestParam(value = "tableName") String tableName, @RequestParam(value = "moduleName") String moduleName, HttpServletResponse response){
-        String generatePath = codeGeneratorService.generate(tableName, moduleName);
-        String zipPath = generatePath + ".zip";
-        ZipUtil.compressionToZip(generatePath,zipPath);
+    public void generate(@RequestParam(value = "tableName") String tableName, @RequestParam(value = "moduleName") String moduleName,@RequestParam(value = "packageName") String packageName, HttpServletResponse response){
+        String filePath = codeGeneratorService.generate(tableName, packageName, moduleName);
         response.setContentType("application/octet-stream");
-        File file = new File(zipPath);
+        File file = new File(filePath);
         response.setHeader("Content-Disposition", "attachment; filename="+file.getName());
         try {
-            IOUtils.copy(new FileInputStream(zipPath),response.getOutputStream());
+            IOUtils.copy(new FileInputStream(file),response.getOutputStream());
             response.flushBuffer();
         } catch (IOException e) {
             e.printStackTrace();

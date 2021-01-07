@@ -7,5 +7,5 @@ package cn.machine.geek.service;
  * @Date: 2020/11/10
  */
 public interface CodeGeneratorService {
-    String generate(String tableName, String moduleName);
+    String generate(String tableName, String packageName, String moduleName);
 }

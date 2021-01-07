@@ -4,6 +4,7 @@ import cn.machine.geek.config.FreeMarkerHump;
 import cn.machine.geek.entity.DatabaseTableColumn;
 import cn.machine.geek.mapper.DatabaseMapper;
 import cn.machine.geek.service.CodeGeneratorService;
+import cn.machine.geek.util.ZipUtil;
 import com.google.common.base.CaseFormat;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -50,7 +51,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
     * @Return: java.lang.String
     */
     @SneakyThrows
-    public String generate(String tableName, String moduleName){
+    public String generate(String tableName, String packageName, String moduleName){
         // 获取数据
         List<DatabaseTableColumn> databaseTableColumns = getColumnsByTableName(tableName);
         if(databaseTableColumns.size() > 0){
@@ -60,12 +61,14 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
             // 设置数据
             data.put("data",databaseTableColumns);
             data.put("tableName",tableName);
+            data.put("packageName",tableName);
             data.put("className", className);
             data.put("instanceName", instanceName);
             data.put("moduleName",moduleName);
             data.put("date", LocalDate.now());
             // 创建目录
-            String directory = generatePath + UUID.randomUUID().toString();
+            String randomName = UUID.randomUUID().toString();
+            String directory = generatePath + randomName + "/";
             File file = new File(directory);
             if(file.mkdirs()){
                 generateFile("entity.ftl",data,directory + className +".java");
@@ -76,6 +79,10 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
                 generateFile("controller.ftl",data,directory + className +"Controller.java");
                 generateFile("api.ftl",data,directory + className +"Api.js");
                 generateFile("vue.ftl",data,directory + className +".vue");
+                // 打包
+                String zipPath = generatePath + randomName + ".zip";
+                ZipUtil.compressionToZip(directory,zipPath);
+                return zipPath;
             }
         }
         return null;

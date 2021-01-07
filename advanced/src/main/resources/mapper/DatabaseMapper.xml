@@ -40,7 +40,8 @@
                 TABLE_COMMENT LIKE '%${keyWord}%'
             )
     </select>
+    <!-- 通过表名查询所有列的信息 -->
     <select id="listColumnByTableName" resultMap="DatabaseTableColumnResultMap">
-        SELECT COLUMN_NAME,DATA_TYPE,COLUMN_COMMENT,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME=#{tableName};
+        SELECT COLUMN_NAME,DATA_TYPE,COLUMN_COMMENT,COLUMN_KEY FROM information_schema.columns WHERE TABLE_NAME=#{tableName} ORDER BY CASE WHEN COLUMN_KEY='PRI' THEN 0 ELSE 1 END ASC;
     </select>
 </mapper>
