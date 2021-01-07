@@ -15,6 +15,7 @@
         <module>business</module>
         <module>api</module>
         <module>application</module>
+        <module>enhance</module>
     </modules>
 
     <parent>
