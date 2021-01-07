@@ -1,5 +1,8 @@
 package cn.machine.geek.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -10,8 +13,15 @@ import lombok.Data;
  */
 @Data
 public class Authority {
+    @TableId(value = "`id`",type= IdType.ASSIGN_ID)
     private Long id;
+
+    @TableField(value = "`name`")
     private String name;
+
+    @TableField(value = "`key`")
     private String key;
+
+    @TableField(value = "`parentId`")
     private Long parentId;
 }
