@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.machine.geek.mapper.${className}Mapper">
+<mapper namespace="${packageName}.mapper.${className}Mapper">
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.machine.geek.entity.${className}">
+    <resultMap id="BaseResultMap" type="${packageName}.entity.${className}">
         <#list data as value>
         <#if value.columnKey == "PRI">
         <id column="${value.columnName}" property="${toHump(value.columnName)}" />

@@ -1,4 +1,4 @@
-package cn.machine.geek.entity;
+package ${packageName}.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -17,29 +17,12 @@ import java.time.LocalDateTime;
 */
 @Data
 @ApiModel(description = "${moduleName}")
-@TableName(value = "${tableName}")
 public class ${className}{
 <#list data as value>
     <#if value.columnKey == "PRI">
     @TableId(value = "`${value.columnName}`")
-    <#else>
-    @TableField(value = "`${value.columnName}`")
     </#if>
     @ApiModelProperty(value = "${value.columnComment}")
-    <#switch value.dataType>
-    <#case "bigint">
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long ${toHump(value.columnName)};
-    <#break>
-    <#case "int">
-    private Integer ${toHump(value.columnName)};
-    <#break>
-    <#case "datetime">
-    private LocalDateTime ${toHump(value.columnName)};
-    <#break>
-    <#default>
-    private String ${toHump(value.columnName)};
-    </#switch>
-
+    private <#switch value.dataType><#case "bigint">Long<#break><#case "int">Integer<#break><#case "datetime">LocalDateTime<#break><#default>String</#switch> ${toHump(value.columnName)};
 </#list>
 }

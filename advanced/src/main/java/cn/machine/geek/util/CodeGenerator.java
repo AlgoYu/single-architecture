@@ -62,7 +62,7 @@ public class CodeGenerator{
             // 设置数据
             data.put("data",databaseTableColumns);
             data.put("tableName",tableName);
-            data.put("packageName",tableName);
+            data.put("packageName",packageName);
             data.put("className", className);
             data.put("instanceName", instanceName);
             data.put("moduleName",moduleName);

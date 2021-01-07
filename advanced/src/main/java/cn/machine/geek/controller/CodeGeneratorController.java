@@ -41,7 +41,7 @@ public class CodeGeneratorController {
 
     @ApiOperation(value = "生成代码",notes = "生成代码")
     @GetMapping(value = "/generate")
-    public void generate(@RequestParam(value = "tableName") String tableName, @RequestParam(value = "moduleName") String moduleName,@RequestParam(value = "packageName") String packageName, HttpServletResponse response){
+    public void generate(@RequestParam(value = "tableName") String tableName, @RequestParam(value = "moduleName") String moduleName,@RequestParam(value = "packageName",required = false,defaultValue = "cn.machine.geek") String packageName, HttpServletResponse response){
         String filePath = codeGenerator.generate(tableName, packageName, moduleName);
         response.setContentType("application/octet-stream");
         File file = new File(filePath);
