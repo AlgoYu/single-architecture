@@ -33,12 +33,12 @@ public class Account{
     @TableField(value = "`version`")
     private Long version;
 
-    @TableField(value = "`lastLogin`")
+    @TableField(value = "`last_login`")
     private LocalDateTime lastLogin;
 
-    @TableField(value = "`createTime`")
+    @TableField(value = "`create_time`")
     private LocalDateTime createTime;
 
-    @TableField(value = "`updateTime`")
+    @TableField(value = "`update_time`")
     private LocalDateTime updateTime;
 }

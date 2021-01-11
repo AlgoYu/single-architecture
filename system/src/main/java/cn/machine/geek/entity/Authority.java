@@ -22,6 +22,6 @@ public class Authority {
     @TableField(value = "`key`")
     private String key;
 
-    @TableField(value = "`parentId`")
+    @TableField(value = "`parent_id`")
     private Long parentId;
 }
