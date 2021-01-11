@@ -1,7 +1,7 @@
 -- 设置模块ID
 SET @ID=${id};
 -- 插入模块权力
-INSERT INTO authority VALUES(@ID,'${moduleName}','${className?upper_case}',0,${className});
+INSERT INTO authority VALUES(@ID,'${moduleName}列表','${className?upper_case}',0,'/${className}');
 -- 插入模块增删改查权力
 INSERT INTO authority VALUES(@ID+1,'增加${moduleName}','${className?upper_case}:ADD',@ID,NULL);
 INSERT INTO authority VALUES(@ID+2,'删除${moduleName}','${className?upper_case}:DELETE',@ID,NULL);

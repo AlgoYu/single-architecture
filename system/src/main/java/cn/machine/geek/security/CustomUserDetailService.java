@@ -9,6 +9,7 @@ import cn.machine.geek.mapper.RoleMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -44,10 +45,10 @@ public class CustomUserDetailService implements UserDetailsService {
         List<Authority> authorities = authorityMapper.selectByAccountId(account.getId());
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         roles.forEach((role)->{
-            grantedAuthorities.add(new CustomGrantedAuthority(role.getName(),role.getKey(),null));
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getKey()));
         });
         authorities.forEach((authority) -> {
-            grantedAuthorities.add(new CustomGrantedAuthority(authority.getName(),authority.getKey(),authority.getUri()));
+            grantedAuthorities.add(new SimpleGrantedAuthority(authority.getKey()));
         });
         return new CustomUserDetail(account.getId(),account.getName(),account.getPassword(),account.getEnable(),grantedAuthorities);
     }
