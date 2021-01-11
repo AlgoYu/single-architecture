@@ -2,15 +2,23 @@ package cn.machine.geek.controller;
 
 import cn.machine.geek.common.P;
 import cn.machine.geek.common.R;
+import cn.machine.geek.dto.AccountRole;
 import cn.machine.geek.entity.Account;
+import cn.machine.geek.entity.AccountRoleRelation;
+import cn.machine.geek.service.AccountRoleRelationService;
 import cn.machine.geek.service.AccountService;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: MachineGeek
@@ -24,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private AccountRoleRelationService accountRoleRelationService;
 
     /**
     * @Author: MachineGeek
@@ -58,24 +68,34 @@ public class AccountController {
     * @Author: MachineGeek
     * @Description: 添加
     * @Date: 2021/1/7
-     * @param account
+     * @param accountRole
     * @Return: cn.machine.geek.common.R
     */
     @PostMapping("/add")
-    public R add(@RequestBody Account account){
-        return R.ok(accountService.save(account));
+    @Transactional
+    public R add(@RequestBody AccountRole accountRole){
+        accountRole.setCreateTime(LocalDateTime.now());
+        accountRole.setUpdateTime(LocalDateTime.now());
+        accountRole.setEnable(false);
+        accountService.save(accountRole);
+        addRoles(accountRole.getId(),accountRole.getRoleIds());
+        return R.ok(true);
     }
 
     /**
     * @Author: MachineGeek
     * @Description: 修改
     * @Date: 2021/1/7
-     * @param account
+     * @param accountRole
     * @Return: cn.machine.geek.common.R
     */
     @PutMapping("/modifyById")
-    public R modifyById(@RequestBody Account account){
-        return R.ok(accountService.updateById(account));
+    @Transactional
+    public R modifyById(@RequestBody AccountRole accountRole){
+        accountRole.setUpdateTime(LocalDateTime.now());
+        accountService.updateById(accountRole);
+        addRoles(accountRole.getId(),accountRole.getRoleIds());
+        return R.ok(true);
     }
 
     /**
@@ -88,5 +108,31 @@ public class AccountController {
     @DeleteMapping("/modifyById")
     public R deleteById(@RequestParam("id") Long id){
         return R.ok(accountService.removeById(id));
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 增加账户与角色的关系
+    * @Date: 2021/1/11
+     * @param accountId
+     * @param roleIds
+    * @Return: void
+    */
+    private void addRoles(Long accountId, List<Long> roleIds){
+        // 清除这个账户所有的关系
+        QueryWrapper<AccountRoleRelation> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(AccountRoleRelation::getAccountId,accountId);
+        accountRoleRelationService.remove(queryWrapper);
+        // 添加新的关系
+        if(roleIds != null && roleIds.size() > 0){
+            List<AccountRoleRelation> accountRoleRelations = new ArrayList<>();
+            roleIds.forEach((roleId)->{
+                AccountRoleRelation accountRoleRelation = new AccountRoleRelation();
+                accountRoleRelation.setAccountId(accountId);
+                accountRoleRelation.setRoleId(roleId);
+                accountRoleRelations.add(accountRoleRelation);
+            });
+            accountRoleRelationService.saveBatch(accountRoleRelations);
+        }
     }
 }

@@ -2,7 +2,10 @@ package cn.machine.geek.controller;
 
 import cn.machine.geek.common.P;
 import cn.machine.geek.common.R;
+import cn.machine.geek.dto.RoleAuthority;
 import cn.machine.geek.entity.Role;
+import cn.machine.geek.entity.RoleAuthorityRelation;
+import cn.machine.geek.service.RoleAuthorityRelationService;
 import cn.machine.geek.service.RoleService;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -11,6 +14,10 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: MachineGeek
@@ -24,6 +31,8 @@ import org.springframework.web.bind.annotation.*;
 public class RoleController {
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private RoleAuthorityRelationService roleAuthorityRelationService;
 
     /**
     * @Author: MachineGeek
@@ -59,24 +68,31 @@ public class RoleController {
     * @Author: MachineGeek
     * @Description: 添加
     * @Date: 2021/1/7
-     * @param role
+     * @param roleAuthority
     * @Return: cn.machine.geek.common.R
     */
     @PostMapping("/add")
-    public R add(@RequestBody Role role){
-        return R.ok(roleService.save(role));
+    public R add(@RequestBody RoleAuthority roleAuthority){
+        roleAuthority.setCreateTime(LocalDateTime.now());
+        roleService.save(roleAuthority);
+        if(roleAuthority.getAuthorityIds() != null && roleAuthority.getAuthorityIds().size() > 0){
+            addAuthorities(roleAuthority.getId(),roleAuthority.getAuthorityIds());
+        }
+        return R.ok();
     }
 
     /**
     * @Author: MachineGeek
     * @Description: 修改
     * @Date: 2021/1/7
-     * @param role
+     * @param roleAuthority
     * @Return: cn.machine.geek.common.R
     */
     @PutMapping("/modifyById")
-    public R modifyById(@RequestBody Role role){
-        return R.ok(roleService.updateById(role));
+    public R modifyById(@RequestBody RoleAuthority roleAuthority){
+        roleAuthority.setUpdateTime(LocalDateTime.now());
+        addAuthorities(roleAuthority.getId(),roleAuthority.getAuthorityIds());
+        return R.ok(roleService.updateById(roleAuthority));
     }
 
     /**
@@ -89,5 +105,31 @@ public class RoleController {
     @DeleteMapping("/modifyById")
     public R deleteById(@RequestParam("id") Long id){
         return R.ok(roleService.removeById(id));
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 添加角色与权力的绑定关系
+    * @Date: 2021/1/11
+     * @param roleId
+     * @param authorityIds
+    * @Return: void
+    */
+    private void addAuthorities(Long roleId, List<Long> authorityIds){
+        // 清除这个角色所有的关系
+        QueryWrapper<RoleAuthorityRelation> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(RoleAuthorityRelation::getRoleId,roleId);
+        roleAuthorityRelationService.remove(queryWrapper);
+        // 添加新的关系
+        if(authorityIds != null && authorityIds.size() > 0){
+            List<RoleAuthorityRelation> roleAuthorityRelations = new ArrayList<>();
+            authorityIds.forEach((authorityId)->{
+                RoleAuthorityRelation roleAuthorityRelation = new RoleAuthorityRelation();
+                roleAuthorityRelation.setRoleId(roleId);
+                roleAuthorityRelation.setAuthorityId(authorityId);
+                roleAuthorityRelations.add(roleAuthorityRelation);
+            });
+            roleAuthorityRelationService.saveBatch(roleAuthorityRelations);
+        }
     }
 }
