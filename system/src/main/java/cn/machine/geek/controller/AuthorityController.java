@@ -2,15 +2,22 @@ package cn.machine.geek.controller;
 
 import cn.machine.geek.common.P;
 import cn.machine.geek.common.R;
+import cn.machine.geek.dto.AuthorityTreeNode;
 import cn.machine.geek.entity.Authority;
+import cn.machine.geek.security.CustomUserDetail;
 import cn.machine.geek.service.AuthorityService;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: MachineGeek
@@ -64,7 +71,41 @@ public class AuthorityController {
     */
     @GetMapping("/tree")
     public R tree(){
-        return R.ok(authorityService.tree());
+        return R.ok(getChild(0l,authorityService.list()));
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 获取当前用户的权限
+    * @Date: 2021/1/11
+     * @param
+    * @Return: cn.machine.geek.common.R
+    */
+    @GetMapping("/treeByCurrent")
+    public R treeByCurrent(){
+        CustomUserDetail customUserDetail = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return R.ok(getChild(0l,authorityService.listByAccountId(customUserDetail.getId())));
+    }
+
+    /**
+     * @Author: MachineGeek
+     * @Description: 获取子节点
+     * @Date: 2021/1/11
+     * @param id
+     * @param authorities
+     * @Return: java.util.List<cn.machine.geek.dto.AuthorityTreeNode>
+     */
+    private List<AuthorityTreeNode> getChild(Long id, List<Authority> authorities){
+        List<AuthorityTreeNode> child = new ArrayList<>();
+        authorities.forEach((authority)->{
+            if(authority.getParentId().equals(id)){
+                AuthorityTreeNode authorityTreeNode = new AuthorityTreeNode();
+                BeanUtils.copyProperties(authority, authorityTreeNode);
+                authorityTreeNode.setChild(getChild(authorityTreeNode.getId(),authorities));
+                child.add(authorityTreeNode);
+            }
+        });
+        return child;
     }
 
     /**
