@@ -24,4 +24,7 @@ public class Authority {
 
     @TableField(value = "`parent_id`")
     private Long parentId;
+
+    @TableField(value = "`uri`")
+    private Long uri;
 }

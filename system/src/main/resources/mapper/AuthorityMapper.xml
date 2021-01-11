@@ -9,10 +9,11 @@
         <result column="name" property="name" />
         <result column="key" property="key" />
         <result column="parent_id" property="parentId" />
+        <result column="uri" property="uri" />
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        `id`,`name`,`key`
+        `id`,`name`,`key`,`uri`
     </sql>
     <!-- 根据用户ID查询权力 -->
     <select id="selectByAccountId" resultMap="BaseResultMap">
