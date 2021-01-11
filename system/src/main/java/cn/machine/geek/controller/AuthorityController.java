@@ -7,6 +7,7 @@ import cn.machine.geek.service.AuthorityService;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @Email: 794763733@qq.com
  * @Date: 2021/1/7
  */
+@Api(tags = "权力接口")
 @RestController
 @RequestMapping("/authority")
 public class AuthorityController {
@@ -51,6 +53,18 @@ public class AuthorityController {
                     .like(Authority::getKey,keyword);
         }
         return R.ok(authorityService.page(new Page<>(p.getPage(),p.getSize())));
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 获取权力树
+    * @Date: 2021/1/11
+     * @param
+    * @Return: cn.machine.geek.common.R
+    */
+    @GetMapping("/tree")
+    public R tree(){
+        return R.ok(authorityService.tree());
     }
 
     /**
