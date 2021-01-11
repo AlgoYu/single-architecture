@@ -14,10 +14,13 @@ import lombok.Data;
 public class DatabaseTableColumn {
     @ApiModelProperty(value = "数据库表列名")
     private String columnName;
+
     @ApiModelProperty(value = "数据库表列数据类型")
     private String dataType;
+
     @ApiModelProperty(value = "数据库表列注释")
     private String columnComment;
+
     @ApiModelProperty(value = "数据库表列主键")
     private String columnKey;
 }

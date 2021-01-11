@@ -14,10 +14,13 @@ import lombok.Data;
 public class DatabaseTable {
     @ApiModelProperty(value = "数据库表名")
     private String tableName;
+
     @ApiModelProperty(value = "数据库表存储引擎")
     private String engine;
+
     @ApiModelProperty(value = "数据库表注释")
     private String tableComment;
+
     @ApiModelProperty(value = "数据库表创建时间")
     private String createTime;
 }
