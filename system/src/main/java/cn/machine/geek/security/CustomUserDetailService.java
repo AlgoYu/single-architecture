@@ -44,10 +44,10 @@ public class CustomUserDetailService implements UserDetailsService {
         List<Authority> authorities = authorityMapper.selectByAccountId(account.getId());
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         roles.forEach((role)->{
-            grantedAuthorities.add(new CustomGrantedAuthority(role.getName(),role.getKey()));
+            grantedAuthorities.add(new CustomGrantedAuthority(role.getName(),role.getKey(),null));
         });
         authorities.forEach((authority) -> {
-            grantedAuthorities.add(new CustomGrantedAuthority(authority.getName(),authority.getKey()));
+            grantedAuthorities.add(new CustomGrantedAuthority(authority.getName(),authority.getKey(),authority.getUri()));
         });
         return new CustomUserDetail(account.getId(),account.getName(),account.getPassword(),account.getEnable(),grantedAuthorities);
     }

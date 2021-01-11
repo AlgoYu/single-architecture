@@ -17,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 public class CustomGrantedAuthority implements GrantedAuthority {
     private String name;
     private String authority;
+    private String uri;
     @Override
     public String getAuthority() {
         return authority;
