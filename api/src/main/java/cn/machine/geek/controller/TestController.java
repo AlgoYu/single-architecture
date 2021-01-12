@@ -36,6 +36,7 @@ public class TestController {
 
     @GetMapping(value = "/get")
     public R get(){
+        log.info("访问!");
         Map<String,Object> map = new HashMap<>();
         map.put("name","haha");
         map.put("power",123456l);

@@ -89,7 +89,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         CustomUserDetail CustomUserDetail = (CustomUserDetail) authResult.getPrincipal();
         CustomUserDetail.setPassword(null);
         Map<String,Object> map = new HashMap<>();
-        map.put("user",CustomUserDetail);
+        map.put("id",CustomUserDetail.getId());
+        map.put("username",CustomUserDetail.getUsername());
         map.put("accessToken",tokenManager.createAccessToken(CustomUserDetail));
         map.put("refreshToken",tokenManager.createRefreshToken(CustomUserDetail.getId()));
         response.setContentType("application/json;charset=utf-8");

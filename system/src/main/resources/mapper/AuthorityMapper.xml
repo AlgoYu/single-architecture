@@ -8,12 +8,12 @@
         <id column="id" property="id" />
         <result column="name" property="name" />
         <result column="key" property="key" />
-        <result column="parent_id" property="parentId" />
         <result column="uri" property="uri" />
+        <result column="pid" property="pid" />
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        `id`,`name`,`key`,`parent_id`,`uri`
+        `id`,`name`,`key`,`pid`,`uri`
     </sql>
     <!-- 根据用户ID查询权力 -->
     <select id="selectByAccountId" resultMap="BaseResultMap">

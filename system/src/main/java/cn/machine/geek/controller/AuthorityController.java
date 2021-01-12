@@ -2,7 +2,7 @@ package cn.machine.geek.controller;
 
 import cn.machine.geek.common.P;
 import cn.machine.geek.common.R;
-import cn.machine.geek.dto.AuthorityTreeNode;
+import cn.machine.geek.dto.AuthorityTree;
 import cn.machine.geek.entity.Authority;
 import cn.machine.geek.security.CustomUserDetail;
 import cn.machine.geek.service.AuthorityService;
@@ -89,23 +89,45 @@ public class AuthorityController {
 
     /**
      * @Author: MachineGeek
-     * @Description: 获取子节点
+     * @Description: 构建权限树子节点
      * @Date: 2021/1/11
      * @param id
      * @param authorities
      * @Return: java.util.List<cn.machine.geek.dto.AuthorityTreeNode>
      */
-    private List<AuthorityTreeNode> getChild(Long id, List<Authority> authorities){
-        List<AuthorityTreeNode> child = new ArrayList<>();
+    private List<AuthorityTree> getChild(Long id, List<Authority> authorities){
+        List<AuthorityTree> child = new ArrayList<>();
         authorities.forEach((authority)->{
-            if(authority.getParentId().equals(id)){
-                AuthorityTreeNode authorityTreeNode = new AuthorityTreeNode();
-                BeanUtils.copyProperties(authority, authorityTreeNode);
-                authorityTreeNode.setChild(getChild(authorityTreeNode.getId(),authorities));
-                child.add(authorityTreeNode);
+            if(authority.getPid().equals(id) && authority.getUri() != null){
+                AuthorityTree authorityTree = new AuthorityTree();
+                BeanUtils.copyProperties(authority, authorityTree);
+                authorityTree.setChild(getChild(authorityTree.getId(),authorities));
+                authorityTree.setAuth(getAuth(authorityTree.getId(),authorities));
+                child.add(authorityTree);
             }
         });
         return child;
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 获取权限
+    * @Date: 2021/1/12
+     * @param id
+    * @param authorities
+    * @Return: java.util.List<java.lang.String>
+    */
+    private List<String> getAuth(Long id,List<Authority> authorities){
+        List<String> auth = new ArrayList<>();
+        authorities.forEach((authority)->{
+            if(authority.getPid().equals(id) && authority.getUri() == null){
+                auth.add(authority.getKey());
+            }
+        });
+        if(auth.size() <= 0){
+            return null;
+        }
+        return auth;
     }
 
     /**

@@ -12,6 +12,7 @@ import java.util.List;
  * @Date: 2021/1/11
  */
 @Data
-public class AuthorityTreeNode extends Authority {
-    private List<AuthorityTreeNode> child;
+public class AuthorityTree extends Authority {
+    private List<AuthorityTree> child;
+    private List<String> auth;
 }
