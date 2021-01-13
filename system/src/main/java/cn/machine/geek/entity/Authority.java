@@ -22,9 +22,12 @@ public class Authority {
     @TableField(value = "`key`")
     private String key;
 
-    @TableField(value = "`uri`")
-    private String uri;
-
     @TableField(value = "`pid`")
     private Long pid;
+
+    @TableField(value = "`sort`")
+    private Integer sort;
+
+    @TableField(value = "`uri`")
+    private String uri;
 }
