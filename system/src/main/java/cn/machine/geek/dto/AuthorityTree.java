@@ -14,5 +14,4 @@ import java.util.List;
 @Data
 public class AuthorityTree extends Authority {
     private List<AuthorityTree> child;
-    private List<String> auth;
 }

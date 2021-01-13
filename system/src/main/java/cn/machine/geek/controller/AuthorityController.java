@@ -17,7 +17,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: MachineGeek
@@ -81,15 +83,33 @@ public class AuthorityController {
      * @param
     * @Return: cn.machine.geek.common.R
     */
-    @GetMapping("/treeByCurrent")
-    public R treeByCurrent(){
+    @GetMapping("/getMyAuthorities")
+    public R getMyAuthorities(){
+        // 获取当前用户ID
         CustomUserDetail customUserDetail = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return R.ok(getChild(0l,authorityService.listByAccountId(customUserDetail.getId())));
+        // 获取当前用户的所有权限
+        List<Authority> authorities = authorityService.listByAccountId(customUserDetail.getId());
+        // 把权限分为路由权限和API权限
+        List<Authority> routes = new ArrayList<>();
+        List<Authority> apis = new ArrayList<>();
+        authorities.forEach((authority)->{
+            if(authority.getUri() == null){
+                apis.add(authority);
+            }else{
+                routes.add(authority);
+            }
+        });
+        // 返回权限
+        Map<String,Object> map = new HashMap<>();
+        map.put("apis",apis);
+        // 返回路由树
+        map.put("routes",getChild(0L,routes));
+        return R.ok(map);
     }
 
     /**
      * @Author: MachineGeek
-     * @Description: 构建权限树子节点
+     * @Description: 构建权限树
      * @Date: 2021/1/11
      * @param id
      * @param authorities
@@ -98,36 +118,14 @@ public class AuthorityController {
     private List<AuthorityTree> getChild(Long id, List<Authority> authorities){
         List<AuthorityTree> child = new ArrayList<>();
         authorities.forEach((authority)->{
-            if(authority.getPid().equals(id) && authority.getUri() != null){
+            if(authority.getPid().equals(id)){
                 AuthorityTree authorityTree = new AuthorityTree();
-                BeanUtils.copyProperties(authority, authorityTree);
+                BeanUtils.copyProperties(authority,authorityTree);
                 authorityTree.setChild(getChild(authorityTree.getId(),authorities));
-                authorityTree.setAuth(getAuth(authorityTree.getId(),authorities));
                 child.add(authorityTree);
             }
         });
         return child;
-    }
-
-    /**
-    * @Author: MachineGeek
-    * @Description: 获取权限
-    * @Date: 2021/1/12
-     * @param id
-    * @param authorities
-    * @Return: java.util.List<java.lang.String>
-    */
-    private List<String> getAuth(Long id,List<Authority> authorities){
-        List<String> auth = new ArrayList<>();
-        authorities.forEach((authority)->{
-            if(authority.getPid().equals(id) && authority.getUri() == null){
-                auth.add(authority.getKey());
-            }
-        });
-        if(auth.size() <= 0){
-            return null;
-        }
-        return auth;
     }
 
     /**
