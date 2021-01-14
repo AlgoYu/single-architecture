@@ -18,6 +18,15 @@ public class Account{
     @TableId(value = "`id`",type= IdType.ASSIGN_ID)
     private Long id;
 
+    @TableField(value = "`picture`")
+    private String picture;
+
+    @TableField(value = "`mobile`")
+    private String mobile;
+
+    @TableField(value = "`email`")
+    private String email;
+
     @TableField(value = "`name`")
     private String name;
 

@@ -6,7 +6,10 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.machine.geek.entity.Account">
         <id column="id" property="id" />
-        <result column="username" property="name" />
+        <result column="picture" property="picture" />
+        <result column="mobile" property="mobile" />
+        <result column="email" property="email" />
+        <result column="name" property="name" />
         <result column="password" property="password" />
         <result column="ip" property="ip" />
         <result column="enable" property="enable" />
@@ -17,6 +20,6 @@
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        `id`,`name`,`password`,`ip`,`enable`,`version`,`last_login`,`create_time`,`update_time`
+        `id`,`picture`,`mobile`,`email`,`name`,`password`,`ip`,`enable`,`version`,`last_login`,`create_time`,`update_time`
     </sql>
 </mapper>
