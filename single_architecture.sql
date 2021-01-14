@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 14/01/2021 10:54:15
+ Date: 14/01/2021 15:49:48
 */
 
 SET NAMES utf8mb4;
@@ -23,6 +23,9 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `id` bigint NOT NULL COMMENT '标识',
+  `picture` varchar(2048) DEFAULT NULL COMMENT '头像',
+  `mobile` varchar(20) DEFAULT NULL COMMENT '手机号',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '账户名称',
   `password` char(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '密码',
   `ip` varchar(65) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'IP地址',
@@ -40,7 +43,7 @@ CREATE TABLE `account` (
 -- Records of account
 -- ----------------------------
 BEGIN;
-INSERT INTO `account` VALUES (1347107263809724418, 'admin', '$2a$10$L7AMqBhiwRrCVNPSMbxIqOerf1WBTFjVDE24S.x2x.ZbofNxUNPii', '127.0.0.1', 1, 0, '2021-01-06 13:41:43', '2021-01-06 13:41:45', '2021-01-06 13:41:46');
+INSERT INTO `account` VALUES (1347107263809724418, '/static/Administrator.jpg', '18106666986', '794763733@qq.com', 'admin', '$2a$10$L7AMqBhiwRrCVNPSMbxIqOerf1WBTFjVDE24S.x2x.ZbofNxUNPii', '127.0.0.1', 1, 0, '2021-01-06 13:41:43', '2021-01-06 13:41:45', '2021-01-06 13:41:46');
 COMMIT;
 
 -- ----------------------------
