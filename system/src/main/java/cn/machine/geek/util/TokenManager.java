@@ -111,4 +111,15 @@ public class TokenManager {
     public UserDetails getByAccessToken(String token){
         return (UserDetails) redisTemplate.opsForValue().get(ACCESS_TOKEN_KEY + token);
     }
+
+    /**
+     * @Author: MachineGeek
+     * @Description: 获取ID通过刷新Token
+     * @Date: 2021/1/6
+     * @param token
+     * @Return: org.springframework.security.core.userdetails.UserDetails
+     */
+    public Long getByRefreshToken(String token){
+        return (Long) redisTemplate.opsForValue().get(REFRESH_TOKEN_KEY + token);
+    }
 }

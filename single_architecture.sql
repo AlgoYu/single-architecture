@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 80022
  Source Host           : 127.0.0.1:3306
- Source Schema         : sigle_architecture
+ Source Schema         : single_architecture
 
  Target Server Type    : MySQL
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 13/01/2021 12:39:36
+ Date: 14/01/2021 10:54:15
 */
 
 SET NAMES utf8mb4;
