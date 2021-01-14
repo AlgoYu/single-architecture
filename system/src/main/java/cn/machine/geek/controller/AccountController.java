@@ -7,18 +7,25 @@ import cn.machine.geek.entity.Account;
 import cn.machine.geek.entity.AccountRoleRelation;
 import cn.machine.geek.service.AccountRoleRelationService;
 import cn.machine.geek.service.AccountService;
+import cn.machine.geek.service.RoleService;
+import cn.machine.geek.util.HttpUtil;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: MachineGeek
@@ -33,7 +40,11 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
     @Autowired
+    private RoleService roleService;
+    @Autowired
     private AccountRoleRelationService accountRoleRelationService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
     * @Author: MachineGeek
@@ -44,7 +55,10 @@ public class AccountController {
     */
     @GetMapping("/getById")
     public R getById(@RequestParam("id") Long id){
-        return R.ok(accountService.getById(id));
+        Map<String,Object> map = new HashMap<>();
+        map.put("account",accountService.getById(id));
+        map.put("roles",roleService.listByAccountId(id));
+        return R.ok(map);
     }
 
     /**
@@ -73,9 +87,10 @@ public class AccountController {
     */
     @PostMapping("/add")
     @Transactional
-    public R add(@RequestBody AccountRole accountRole){
+    public R add(@RequestBody AccountRole accountRole, HttpServletRequest httpServletRequest){
         accountRole.setCreateTime(LocalDateTime.now());
-        accountRole.setUpdateTime(LocalDateTime.now());
+        accountRole.setIp(HttpUtil.getIpAddr(httpServletRequest));
+        accountRole.setPassword(passwordEncoder.encode(accountRole.getPassword()));
         accountRole.setEnable(false);
         accountService.save(accountRole);
         addRoles(accountRole.getId(),accountRole.getRoleIds());
@@ -92,8 +107,12 @@ public class AccountController {
     @PutMapping("/modifyById")
     @Transactional
     public R modifyById(@RequestBody AccountRole accountRole){
-        accountRole.setUpdateTime(LocalDateTime.now());
-        accountService.updateById(accountRole);
+        UpdateWrapper<Account> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.lambda().eq(Account::getId,accountRole.getId())
+                .set(Account::getPicture,accountRole.getPicture())
+                .set(Account::getEmail,accountRole.getEmail())
+                .set(Account::getEnable,accountRole.getEnable())
+                .set(Account::getUpdateTime,LocalDateTime.now());
         addRoles(accountRole.getId(),accountRole.getRoleIds());
         return R.ok(true);
     }

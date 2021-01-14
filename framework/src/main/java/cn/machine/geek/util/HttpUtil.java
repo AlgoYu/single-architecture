@@ -12,7 +12,7 @@ import java.util.Set;
  * @Description: HttpServletRequest请求工具类
  * @Date: 2020/11/6
  */
-public class HttpServletRequestUtil {
+public class HttpUtil {
     /**
     * @Author: MachineGeek
     * @Description: 获取用户的真实IP地址
