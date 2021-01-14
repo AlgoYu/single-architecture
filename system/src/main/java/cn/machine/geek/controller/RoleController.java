@@ -5,10 +5,12 @@ import cn.machine.geek.common.R;
 import cn.machine.geek.dto.RoleAuthority;
 import cn.machine.geek.entity.Role;
 import cn.machine.geek.entity.RoleAuthorityRelation;
+import cn.machine.geek.service.AuthorityService;
 import cn.machine.geek.service.RoleAuthorityRelationService;
 import cn.machine.geek.service.RoleService;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: MachineGeek
@@ -32,7 +36,21 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
     @Autowired
+    private AuthorityService authorityService;
+    @Autowired
     private RoleAuthorityRelationService roleAuthorityRelationService;
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 获取所有角色
+    * @Date: 2021/1/14
+     * @param
+    * @Return: cn.machine.geek.common.R
+    */
+    @GetMapping("/list")
+    private R list(){
+        return R.ok(roleService.list());
+    }
 
     /**
     * @Author: MachineGeek
@@ -43,7 +61,10 @@ public class RoleController {
     */
     @GetMapping("/getById")
     public R getById(@RequestParam("id") Long id){
-        return R.ok(roleService.getById(id));
+        Map<String,Object> map = new HashMap<>();
+        map.put("role",roleService.getById(id));
+        map.put("authorities",authorityService.listByRoleId(id));
+        return R.ok(map);
     }
 
     /**
@@ -90,9 +111,12 @@ public class RoleController {
     */
     @PutMapping("/modifyById")
     public R modifyById(@RequestBody RoleAuthority roleAuthority){
-        roleAuthority.setUpdateTime(LocalDateTime.now());
+        UpdateWrapper<Role> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.lambda().eq(Role::getId,roleAuthority.getId())
+                .set(Role::getName,roleAuthority.getName())
+                .set(Role::getUpdateTime,LocalDateTime.now());
         addAuthorities(roleAuthority.getId(),roleAuthority.getAuthorityIds());
-        return R.ok(roleService.updateById(roleAuthority));
+        return R.ok(roleService.update(updateWrapper));
     }
 
     /**

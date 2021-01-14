@@ -109,12 +109,12 @@ public class AccountController {
     public R modifyById(@RequestBody AccountRole accountRole){
         UpdateWrapper<Account> updateWrapper = new UpdateWrapper<>();
         updateWrapper.lambda().eq(Account::getId,accountRole.getId())
-                .set(Account::getPicture,accountRole.getPicture())
                 .set(Account::getEmail,accountRole.getEmail())
+                .set(Account::getMobile,accountRole.getMobile())
                 .set(Account::getEnable,accountRole.getEnable())
                 .set(Account::getUpdateTime,LocalDateTime.now());
         addRoles(accountRole.getId(),accountRole.getRoleIds());
-        return R.ok(true);
+        return R.ok(accountService.update(updateWrapper));
     }
 
     /**
