@@ -27,7 +27,6 @@ public class TokenController {
     @Autowired
     private TokenManager tokenManager;
 
-
     @GetMapping(value = "refreshToken")
     public R refreshToken(@RequestParam(value = "/refreshToken") String refreshToken){
         if(!StringUtils.isEmpty(refreshToken)){
