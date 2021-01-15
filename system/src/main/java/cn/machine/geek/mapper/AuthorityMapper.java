@@ -16,5 +16,5 @@ import java.util.List;
 @Mapper
 public interface AuthorityMapper extends BaseMapper<Authority> {
     List<Authority> selectByAccountId(@Param("accountId")Long accountId);
-    List<Authority> selectByRoleId(@Param("role")Long roleId);
+    List<Authority> selectByRoleId(@Param("roleId")Long roleId);
 }
