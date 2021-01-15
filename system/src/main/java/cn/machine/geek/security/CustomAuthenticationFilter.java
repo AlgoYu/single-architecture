@@ -33,7 +33,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private ObjectMapper objectMapper;
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager, TokenManager tokenManager, ObjectMapper objectMapper) {
-        super(authenticationManager);
+        setAuthenticationManager(authenticationManager);
         this.tokenManager = tokenManager;
         this.objectMapper = objectMapper;
         setFilterProcessesUrl("/login");
@@ -86,13 +86,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        CustomUserDetail CustomUserDetail = (CustomUserDetail) authResult.getPrincipal();
-        CustomUserDetail.setPassword(null);
+        CustomUserDetail customuserdetail = (CustomUserDetail) authResult.getPrincipal();
+        customuserdetail.setPassword(null);
         Map<String,Object> map = new HashMap<>();
-        map.put("id",CustomUserDetail.getId());
-        map.put("username",CustomUserDetail.getUsername());
-        map.put("accessToken",tokenManager.createAccessToken(CustomUserDetail));
-        map.put("refreshToken",tokenManager.createRefreshToken(CustomUserDetail.getId()));
+        map.put("id",customuserdetail.getId());
+        map.put("username",customuserdetail.getUsername());
+        map.put("accessToken",tokenManager.createAccessToken(customuserdetail));
+        map.put("refreshToken",tokenManager.createRefreshToken(customuserdetail));
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
         String json = objectMapper.writeValueAsString(R.ok(map));

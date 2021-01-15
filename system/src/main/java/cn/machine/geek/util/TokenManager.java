@@ -73,9 +73,9 @@ public class TokenManager {
      * @param
     * @Return: java.lang.String
     */
-    public String createRefreshToken(Long id){
+    public String createRefreshToken(UserDetails userDetails){
         String token = UUID.randomUUID().toString();
-        redisTemplate.opsForValue().set(REFRESH_TOKEN_KEY + token, id, refreshTokenExpire, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(REFRESH_TOKEN_KEY + token, userDetails, refreshTokenExpire, TimeUnit.SECONDS);
         return token;
     }
 
@@ -119,7 +119,7 @@ public class TokenManager {
      * @param token
      * @Return: org.springframework.security.core.userdetails.UserDetails
      */
-    public Long getByRefreshToken(String token){
-        return (Long) redisTemplate.opsForValue().get(REFRESH_TOKEN_KEY + token);
+    public UserDetails getByRefreshToken(String token){
+        return (UserDetails) redisTemplate.opsForValue().get(REFRESH_TOKEN_KEY + token);
     }
 }
