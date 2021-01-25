@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 15/01/2021 18:33:53
+ Date: 25/01/2021 18:21:18
 */
 
 SET NAMES utf8mb4;
@@ -110,7 +110,7 @@ INSERT INTO `authority` VALUES (1348542368843452421, '数据中心', 'DASHBOARD'
 INSERT INTO `authority` VALUES (1348542368843452422, '代码生成器', 'CODEGENERATOR', 1348542368843452419, 0, '/CodeGenerator');
 INSERT INTO `authority` VALUES (1348542368843452423, '数据监控', 'MONITOR', 1348542368843452419, 0, '/Monitor');
 INSERT INTO `authority` VALUES (1348542368843452424, '异常信息', 'EXCEPTION', 1348542368843452419, 0, '/Exception');
-INSERT INTO `authority` VALUES (1348542368843452425, '开发文档', 'DEVDOC', 1348542368843452419, 0, '/DevDoc');
+INSERT INTO `authority` VALUES (1348542368843452425, '开发文档', 'DOCUMENT', 1348542368843452419, 0, '/DevDoc');
 COMMIT;
 
 -- ----------------------------
@@ -134,7 +134,7 @@ CREATE TABLE `role` (
 -- Records of role
 -- ----------------------------
 BEGIN;
-INSERT INTO `role` VALUES (1347107367358693378, '超级管理员1', 'ROLE_Administrator', 0, '2021-01-06 13:54:03', '2021-01-15 15:12:13');
+INSERT INTO `role` VALUES (1347107367358693378, '超级管理员', 'ROLE_Administrator', 0, '2021-01-06 13:54:03', '2021-01-18 15:45:05');
 COMMIT;
 
 -- ----------------------------

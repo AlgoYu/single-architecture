@@ -101,6 +101,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 设置安全策略
         http
+                .cors().and().csrf().disable()
                 // 替换自定义登录逻辑
                 .addFilterAt(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 // 增加Token过滤器
@@ -116,8 +117,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 设置注销处理
                 .logoutSuccessHandler(customLogout)
                 .permitAll()
-                // 关闭CSRF攻击，开启跨域。
-                .and().csrf().disable().cors()
                 // 设置验证路径
                 .and().authorizeRequests()
                 .antMatchers("/login","/api/**")

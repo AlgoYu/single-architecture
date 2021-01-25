@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,9 +86,9 @@ public class AuthorityController {
     * @Return: cn.machine.geek.common.R
     */
     @GetMapping("/getMyAuthorities")
-    public R getMyAuthorities(){
+    public R getMyAuthorities(Authentication authentication){
         // 获取当前用户ID
-        CustomUserDetail customUserDetail = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
         // 获取当前用户的所有权限
         List<Authority> authorities = authorityService.listByAccountId(customUserDetail.getId());
         // 把权限分为路由权限和API权限

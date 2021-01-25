@@ -5,6 +5,7 @@ import cn.machine.geek.common.R;
 import cn.machine.geek.dto.AccountRole;
 import cn.machine.geek.entity.Account;
 import cn.machine.geek.entity.AccountRoleRelation;
+import cn.machine.geek.security.CustomUserDetail;
 import cn.machine.geek.service.AccountRoleRelationService;
 import cn.machine.geek.service.AccountService;
 import cn.machine.geek.service.RoleService;
@@ -16,6 +17,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -48,6 +50,19 @@ public class AccountController {
     private PasswordEncoder passwordEncoder;
     public static final String DEFAULT_PASSWORD = "123456";
 
+    /**
+    * @Author: MachineGeek
+    * @Description: 获取当前用户信息
+    * @Date: 2021/1/25
+     * @param authentication
+    * @Return: cn.machine.geek.common.R
+    */
+    @GetMapping("/getMyInfo")
+    public R getMyInfo(Authentication authentication){
+        CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
+        return R.ok(accountService.getById(customUserDetail.getId()));
+    }
+    
     /**
     * @Author: MachineGeek
     * @Description: 根据ID获取

@@ -2,6 +2,7 @@ package cn.machine.geek.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -41,5 +42,20 @@ public class WebConfig implements WebMvcConfigurer {
         // 项目内的静态资源映射
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
+    }
+
+    /** @Author: MachineGeek
+     * @Description: 跨域配置
+     * @Date: 2020/10/4
+     * @param registry
+     * @Return void
+     */
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*")
+                .allowCredentials(true)
+                .allowedMethods("GET", "POST", "DELETE", "PUT")
+                .maxAge(3600 * 24);
     }
 }
