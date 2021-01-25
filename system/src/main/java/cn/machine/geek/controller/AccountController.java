@@ -9,6 +9,7 @@ import cn.machine.geek.service.AccountRoleRelationService;
 import cn.machine.geek.service.AccountService;
 import cn.machine.geek.service.RoleService;
 import cn.machine.geek.util.HttpUtil;
+import cn.machine.geek.util.MD5Util;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -45,6 +46,7 @@ public class AccountController {
     private AccountRoleRelationService accountRoleRelationService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    public static final String DEFAULT_PASSWORD = "123456";
 
     /**
     * @Author: MachineGeek
@@ -95,6 +97,21 @@ public class AccountController {
         accountService.save(accountRole);
         addRoles(accountRole.getId(),accountRole.getRoleIds());
         return R.ok(true);
+    }
+
+    /**
+    * @Author: MachineGeek
+    * @Description: 重置密码为123456
+    * @Date: 2021/1/25
+     * @param id
+    * @Return: cn.machine.geek.common.R
+    */
+    @PutMapping("/reset")
+    public R reset(@RequestParam(value = "id")Long id){
+        UpdateWrapper<Account> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.lambda().eq(Account::getId,id)
+                .set(Account::getPassword,passwordEncoder.encode(MD5Util.stringToMD5(DEFAULT_PASSWORD).toUpperCase()));
+        return R.ok(accountService.update(updateWrapper));
     }
 
     /**
