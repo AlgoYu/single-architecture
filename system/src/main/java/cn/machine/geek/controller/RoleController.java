@@ -36,7 +36,7 @@ import java.util.Map;
 @RequestMapping("/role")
 public class RoleController {
     @Autowired
-    private RoleService roleService;
+    private RoleService roleService; //这个角色服务
     @Autowired
     private AuthorityService authorityService;
     @Autowired
@@ -50,7 +50,7 @@ public class RoleController {
     * @Return: cn.machine.geek.common.R
     */
     @GetMapping("/list")
-    private R list(){
+    public R list(){
         return R.ok(roleService.list());
     }
 
