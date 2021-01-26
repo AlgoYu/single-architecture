@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 26/01/2021 17:38:49
+ Date: 26/01/2021 18:04:23
 */
 
 SET NAMES utf8mb4;
@@ -134,7 +134,7 @@ CREATE TABLE `role` (
 -- Records of role
 -- ----------------------------
 BEGIN;
-INSERT INTO `role` VALUES (1347107367358693378, '超级管理员', 'ROLE_Administrator', 0, '2021-01-06 13:54:03', '2021-01-26 17:38:33');
+INSERT INTO `role` VALUES (1347107367358693378, '超级管理员', 'ROLE_Administrator', 0, '2021-01-06 13:54:03', '2021-01-26 18:04:14');
 COMMIT;
 
 -- ----------------------------
@@ -200,31 +200,6 @@ CREATE TABLE `system_exception` (
 -- Records of system_exception
 -- ----------------------------
 BEGIN;
-INSERT INTO `system_exception` VALUES (1353986296978386945, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 16:41:04');
-INSERT INTO `system_exception` VALUES (1353986420626468865, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 16:41:33');
-INSERT INTO `system_exception` VALUES (1353987503146971138, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 16:45:51');
-INSERT INTO `system_exception` VALUES (1353988940656586753, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 16:51:34');
-INSERT INTO `system_exception` VALUES (1353991572653649922, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:02:02');
-INSERT INTO `system_exception` VALUES (1353992968094396417, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:07:34');
-INSERT INTO `system_exception` VALUES (1353993015666192385, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:07:46');
-INSERT INTO `system_exception` VALUES (1353993073153323009, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:07:59');
-INSERT INTO `system_exception` VALUES (1353993945035878402, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:11:27');
-INSERT INTO `system_exception` VALUES (1353993977231355906, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:11:35');
-INSERT INTO `system_exception` VALUES (1353994151529852930, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:12:16');
-INSERT INTO `system_exception` VALUES (1353998108427857921, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:28:00');
-INSERT INTO `system_exception` VALUES (1353998229467082753, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:28:29');
-INSERT INTO `system_exception` VALUES (1353998314020057090, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:28:49');
-INSERT INTO `system_exception` VALUES (1353998607407427586, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:29:59');
-INSERT INTO `system_exception` VALUES (1353998644334080002, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:30:08');
-INSERT INTO `system_exception` VALUES (1353998756561072129, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:30:34');
-INSERT INTO `system_exception` VALUES (1353999152767610881, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:32:09');
-INSERT INTO `system_exception` VALUES (1353999194496741377, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:32:19');
-INSERT INTO `system_exception` VALUES (1353999233847701505, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:32:28');
-INSERT INTO `system_exception` VALUES (1353999239799418881, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:32:30');
-INSERT INTO `system_exception` VALUES (1353999250335510529, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:32:32');
-INSERT INTO `system_exception` VALUES (1353999527117631490, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:33:38');
-INSERT INTO `system_exception` VALUES (1354000016060231682, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:35:35');
-INSERT INTO `system_exception` VALUES (1354000066534486017, '/role/list', 'GET', '?', '127.0.0.1', 'java.lang.NullPointerException', NULL, '2021-01-26 17:35:47');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
