@@ -15,7 +15,6 @@
         <dependency>
             <groupId>cn.machine.geek</groupId>
             <artifactId>api</artifactId>
-            <version>${parent.version}</version>
         </dependency>
         <!-- Develop依赖 -->
         <dependency>

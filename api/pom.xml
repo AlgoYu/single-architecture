@@ -15,7 +15,6 @@
         <dependency>
             <groupId>cn.machine.geek</groupId>
             <artifactId>business</artifactId>
-            <version>${parent.version}</version>
         </dependency>
     </dependencies>
 

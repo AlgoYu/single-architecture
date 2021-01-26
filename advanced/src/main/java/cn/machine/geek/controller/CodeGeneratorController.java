@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,12 +36,14 @@ public class CodeGeneratorController {
 
     @ApiOperation(value = "获取数据库表",notes = "获取数据库表")
     @GetMapping(value = "/paging")
+    @PreAuthorize("hasAuthority('GENERATOR:GET')")
     public R paging(@Validated P p){
         return R.ok(databaseService.paging(p.getPage(),p.getSize(),p.getKeyword()));
     }
 
     @ApiOperation(value = "生成代码",notes = "生成代码")
     @GetMapping(value = "/generate")
+    @PreAuthorize("hasAuthority('GENERATOR:GENERATE')")
     public void generate(@RequestParam(value = "tableName") String tableName, @RequestParam(value = "moduleName") String moduleName,@RequestParam(value = "packageName",required = false,defaultValue = "cn.machine.geek") String packageName, HttpServletResponse response){
         String filePath = codeGenerator.generate(tableName, packageName, moduleName);
         response.setContentType("application/octet-stream");

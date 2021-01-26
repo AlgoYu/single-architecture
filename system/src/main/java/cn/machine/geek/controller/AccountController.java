@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,8 +71,9 @@ public class AccountController {
      * @param id
     * @Return: cn.machine.geek.common.R
     */
-    @GetMapping("/getById")
-    public R getById(@RequestParam("id") Long id){
+    @GetMapping("/getWithRoleById")
+    @PreAuthorize("hasAuthority('ACCOUNT:GET')")
+    public R getWithRoleById(@RequestParam("id") Long id){
         Map<String,Object> map = new HashMap<>();
         map.put("account",accountService.getById(id));
         map.put("roles",roleService.listByAccountId(id));
@@ -86,6 +88,7 @@ public class AccountController {
     * @Return: cn.machine.geek.common.R
     */
     @GetMapping("/paging")
+    @PreAuthorize("hasAuthority('ACCOUNT:GET')")
     public R paging(@Validated P p){
         QueryWrapper<Account> queryWrapper = new QueryWrapper<>();
         String keyword = p.getKeyword();
@@ -102,16 +105,19 @@ public class AccountController {
      * @param accountRole
     * @Return: cn.machine.geek.common.R
     */
-    @PostMapping("/add")
+    @PostMapping("/addWithRole")
     @Transactional
-    public R add(@RequestBody AccountRole accountRole, HttpServletRequest httpServletRequest){
+    @PreAuthorize("hasAuthority('ACCOUNT:ADD')")
+    public R addWithRole(@RequestBody AccountRole accountRole, HttpServletRequest httpServletRequest){
         accountRole.setCreateTime(LocalDateTime.now());
         accountRole.setIp(HttpUtil.getIpAddr(httpServletRequest));
         accountRole.setPassword(passwordEncoder.encode(accountRole.getPassword()));
-        accountRole.setEnable(false);
-        accountService.save(accountRole);
-        addRoles(accountRole.getId(),accountRole.getRoleIds());
-        return R.ok(true);
+        if(accountService.save(accountRole)){
+            addRoles(accountRole.getId(),accountRole.getRoleIds());
+            return R.ok();
+        }else{
+            return R.fail("添加失败");
+        }
     }
 
     /**
@@ -122,6 +128,7 @@ public class AccountController {
     * @Return: cn.machine.geek.common.R
     */
     @PutMapping("/reset")
+    @PreAuthorize("hasAuthority('ACCOUNT:MODIFY')")
     public R reset(@RequestParam(value = "id")Long id){
         UpdateWrapper<Account> updateWrapper = new UpdateWrapper<>();
         updateWrapper.lambda().eq(Account::getId,id)
@@ -136,9 +143,10 @@ public class AccountController {
      * @param accountRole
     * @Return: cn.machine.geek.common.R
     */
-    @PutMapping("/modifyById")
+    @PutMapping("/modifyWithRoleById")
     @Transactional
-    public R modifyById(@RequestBody AccountRole accountRole){
+    @PreAuthorize("hasAuthority('ACCOUNT:MODIFY')")
+    public R modifyWithRoleById(@RequestBody AccountRole accountRole){
         UpdateWrapper<Account> updateWrapper = new UpdateWrapper<>();
         updateWrapper.lambda().eq(Account::getId,accountRole.getId())
                 .set(Account::getEmail,accountRole.getEmail())
@@ -156,7 +164,8 @@ public class AccountController {
      * @param id
     * @Return: cn.machine.geek.common.R
     */
-    @DeleteMapping("/modifyById")
+    @DeleteMapping("/deleteById")
+    @PreAuthorize("hasAuthority('ACCOUNT:DELETE')")
     public R deleteById(@RequestParam("id") Long id){
         return R.ok(accountService.removeById(id));
     }
