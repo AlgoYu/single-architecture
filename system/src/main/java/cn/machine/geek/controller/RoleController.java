@@ -100,6 +100,9 @@ public class RoleController {
     @Transactional
     @PreAuthorize("hasAuthority('ROLE:ADD')")
     public R addWithAuthority(@RequestBody RoleAuthority roleAuthority){
+        if(!roleAuthority.getName().startsWith("ROLE_")){
+            roleAuthority.setName("ROLE_"+roleAuthority.getName());
+        }
         roleAuthority.setCreateTime(LocalDateTime.now());
         if(roleService.save(roleAuthority)){
             addAuthorities(roleAuthority.getId(),roleAuthority.getAuthorityIds());
