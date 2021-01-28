@@ -41,7 +41,7 @@ public class AuthorityController {
     public R tree(){
         QueryWrapper<Authority> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().orderByDesc(Authority::getSort);
-        return R.ok(getChild(0l,authorityService.list(queryWrapper)));
+        return R.ok(getChild(0L,authorityService.list(queryWrapper)));
     }
 
     /**
