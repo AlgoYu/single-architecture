@@ -18,12 +18,12 @@ public class WebConfig implements WebMvcConfigurer {
     // 本地路径
     public static String PATH;
 
-    @Value("${route-map.uri}")
+    @Value("${route-map.uri:/upload/}")
     public static void setUri(String Uri) {
         URI = Uri;
     }
 
-    @Value("${route-map.path}")
+    @Value("${route-map.path:/usr/local/project-upload/}")
     public static void setPath(String path) {
         PATH = path;
     }

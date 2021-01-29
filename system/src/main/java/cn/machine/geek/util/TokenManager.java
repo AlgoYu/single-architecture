@@ -17,11 +17,11 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class TokenManager {
-    // AccessToken 过期时间
-    @Value(value = "${token.accessTokenExpire}")
+    // AccessToken 过期时间 默认8小时
+    @Value(value = "${token.accessTokenExpire:28800}")
     private long accessTokenExpire;
-    // RefreshToken 过期时间
-    @Value(value = "${token.refreshTokenExpire}")
+    // RefreshToken 过期时间 默认3天
+    @Value(value = "${token.refreshTokenExpire:259200}")
     private long refreshTokenExpire;
 
     public static final String TOKEN_HEAD = "Token";

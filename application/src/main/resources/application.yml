@@ -40,14 +40,14 @@ spring:
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
 # Token超时时间（单位秒）
-token:
+#token:
   # 8个小时28800
-  accessTokenExpire: 28800
+  #accessTokenExpire: 28800
   # 15天1296000
-  refreshTokenExpire: 1296000
+  #refreshTokenExpire: 1296000
 # URI映射路径
 route-map:
   uri: /upload/
   path: /Volumes/Project/upload/
 # 代码生成器生成路径
-generate-path: /Users/machine/Desktop/生成/
+# generate-path: /Users/machine/Desktop/生成/
